@@ -2,16 +2,11 @@
 Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
-
-
-
 /*
 For assistance:
    Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
    Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
 */
-
-
 
 /* showPage function will show the initial list of students based on the page number
 called by the function.
@@ -77,4 +72,18 @@ linkList.addEventListener('click', (e)=>{
    }
    
 })
+const header = document.querySelector('header');
+const searchBar = document.createElement('label')
+searchBar.for="search"
+searchBar.className = "student-search"
+searchBar.innerHTML = `
+<label for = "search" class="student-search"
+   <span></span>
+   <input id = "search" placeholder="Search by name...">
+   <button type = "button"> 
+      <img src ="img/icn-search.svg" alt="Search Icon">
+   </button>
+`;
+header.appendChild(searchBar)
+
 // Call functions
