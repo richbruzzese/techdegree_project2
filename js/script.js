@@ -47,17 +47,40 @@ studentList.innerHTML = '';
       }
    }
 }
-showPage(data, 1)
 
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
+const numOfPages = Math.ceil(data.length / 9)
+const linkList = document.querySelector('.link-list')
+linkList.innerHTML=''
 function addPagination(list){
-
-
+   for(i=1; i<=numOfPages; i++){
+      let button = `<li> <button type="button">${i}</button> </li>`;
+      linkList.insertAdjacentHTML('beforeend', button);
+   }
 }
+showPage(data,1);
+addPagination(data);
 
+  // create an event listener on the `link-list` element
+    // if the click target is a button:
+      // remove the "active" class from the previous button
+      // add the active class to the clicked button
+      // call the showPage function passing the `list` parameter and page to display as arguments
 
+const setActive = document.querySelector('button')
+setActive.className += 'active'
 
+linkList.addEventListener('click', (e)=>{
+   if(e.target.tagName === 'BUTTON'){
+      const removeActive = document.querySelector('.active')
+      removeActive.className = ''
+      e.target.className = "active"
+      showPage(data,e.target.textContent)
+
+   }
+   
+})
 // Call functions
