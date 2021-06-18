@@ -64,12 +64,6 @@ function addPagination(list){
 showPage(data,1);
 addPagination(data);
 
-  // create an event listener on the `link-list` element
-    // if the click target is a button:
-      // remove the "active" class from the previous button
-      // add the active class to the clicked button
-      // call the showPage function passing the `list` parameter and page to display as arguments
-
 const setActive = document.querySelector('button')
 setActive.className += 'active'
 
