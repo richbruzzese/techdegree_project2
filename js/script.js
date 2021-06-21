@@ -13,7 +13,7 @@ called by the function.
 
 Created variables to call out to the index item in the data.js file and 
 map it to an index
-injecting HTML into the page via the studenList.innerHTML variable.
+injecting HTML into the page via template literal the studenList.innerHTML variable.
 */
 function showPage (list, page){
 const indexStart =  (page * 9) - 9 
@@ -44,8 +44,8 @@ studentList.innerHTML = '';
 }
 
 /*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
+addPagination function will create buttons based on the number of items present within
+the data.js file. Dynamically create buttons based on the length of items
 */
 const numOfPages = Math.ceil(data.length / 9)
 const linkList = document.querySelector('.link-list')
@@ -55,35 +55,22 @@ function addPagination(list){
       let button = `<li> <button type="button">${i}</button> </li>`;
       linkList.insertAdjacentHTML('beforeend', button);
    }
+   const setActive = document.querySelector('button')
+   setActive.className += 'active'
+/*
+Event listener will change the items on the page based on the button item
+clicked by switching active class.
+*/
+   linkList.addEventListener('click', (e)=>{
+      if(e.target.tagName === 'BUTTON'){
+         const removeActive = document.querySelector('.active')
+         removeActive.className = ''
+         e.target.className = "active"
+         showPage(data,e.target.textContent)
+   
+      }
+      
+   }) 
 }
 showPage(data,1);
 addPagination(data);
-
-const setActive = document.querySelector('button')
-setActive.className += 'active'
-
-linkList.addEventListener('click', (e)=>{
-   if(e.target.tagName === 'BUTTON'){
-      const removeActive = document.querySelector('.active')
-      removeActive.className = ''
-      e.target.className = "active"
-      showPage(data,e.target.textContent)
-
-   }
-   
-})
-const header = document.querySelector('header');
-const searchBar = document.createElement('label')
-searchBar.for="search"
-searchBar.className = "student-search"
-searchBar.innerHTML = `
-<label for = "search" class="student-search"
-   <span></span>
-   <input id = "search" placeholder="Search by name...">
-   <button type = "button"> 
-      <img src ="img/icn-search.svg" alt="Search Icon">
-   </button>
-`;
-header.appendChild(searchBar)
-
-// Call functions
