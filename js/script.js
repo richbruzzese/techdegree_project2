@@ -16,31 +16,31 @@ map it to an index
 injecting HTML into the page via template literal the studenList.innerHTML variable.
 */
 function showPage (list, page){
-const indexStart =  (page * 9) - 9 
-const indexEnd = (page* 9)
-const studentList = document.querySelector('.student-list')
-studentList.innerHTML = '';
-   for(i=0; i<list.length; i++){
-      if(i >= indexStart && i<indexEnd){
-         const studentName =  list[i].name.first + ' ' + list[i].name.last
-         const avatar = list[i].picture.large
-         const date = list[i].registered.date
-         const email = list[i].email
-         let studentItem = 
-         `<li class="student-item cf">
-            <div class="student-details">
-               <img class="avatar" src="${avatar}">
-               <h3>${studentName}</h3>
-               <span class="email">${email}</span>
-            </div>
-            <div class = "joined details">
-             <span class = "date">${date}</span>
-            </div>
-            </li> `
-         console.log(avatar)
-         studentList.insertAdjacentHTML('beforeend', studentItem)
+   const indexStart =  (page * 9) - 9 
+   const indexEnd = (page* 9)
+   const studentList = document.querySelector('.student-list')
+   studentList.innerHTML = '';
+      for(i=0; i<list.length; i++){
+         if(i >= indexStart && i<indexEnd){
+            const studentName =  list[i].name.first + ' ' + list[i].name.last
+            const avatar = list[i].picture.large
+            const date = list[i].registered.date
+            const email = list[i].email
+            let studentItem = 
+               `<li class="student-item cf">
+                  <div class="student-details">
+                     <img class="avatar" src="${avatar}">
+                     <h3>${studentName}</h3>
+                     <span class="email">${email}</span>
+                  </div>
+                  <div class = "joined details">
+                  <span class = "date">${date}</span>
+                  </div>
+                  </li> `
+            console.log(avatar)
+            studentList.insertAdjacentHTML('beforeend', studentItem)
+         }
       }
-   }
 }
 
 /*
@@ -50,7 +50,7 @@ the data.js file. Dynamically create buttons based on the length of items
 const numOfPages = Math.ceil(data.length / 9)
 const linkList = document.querySelector('.link-list')
 linkList.innerHTML=''
-function addPagination(list){
+function addPagination(data){
    for(i=1; i<=numOfPages; i++){
       let button = `<li> <button type="button">${i}</button> </li>`;
       linkList.insertAdjacentHTML('beforeend', button);
@@ -72,5 +72,39 @@ clicked by switching active class.
       
    }) 
 }
+/*
+Search Bar filter will check for search term and filter the page based on results
+*/
+const header = document.querySelector('header');
+const searchBar = document.createElement('label')
+searchBar.setAttribute("for", 'search')
+searchBar.className = "student-search"
+searchBar.innerHTML = `<span>Search by name</span>
+<input id="search" placeholder="Search by name...">
+<button type="button"><img src="img/icn-search.svg" alt="Search icon">
+</button>
+`;
+header.appendChild(searchBar);
+searchBar.addEventListener('keyup', (e) =>{
+   const searchTerm = e.target.value.toLowerCase();
+   const filteredStudents = data.filter((student) => {
+      return (
+         student.name.first.toLowerCase().includes(searchTerm) ||
+         student.name.last.toLowerCase().includes(searchTerm)
+      );
+   })
+showPage(filteredStudents,1)
+   if (filteredStudents.length <= 9){               
+      linkList.innerHTML = ''
+         }else if (filteredStudents.length > 9)
+         {addPagination(filteredStudents)}
+   if(filteredStudents.length == 0){
+      let ul = document.querySelector('ul')  
+      let noResults = document.createElement('h3')
+        noResults.innerHTML="No Results Found"
+        ul.appendChild(noResults)  
+      }
+})
+
 showPage(data,1);
-addPagination(data);
+// addPagination(data);
