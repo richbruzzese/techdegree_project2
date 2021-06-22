@@ -47,33 +47,39 @@ function showPage (list, page){
 addPagination function will create buttons based on the number of items present within
 the data.js file. Dynamically create buttons based on the length of items
 */
-const numOfPages = Math.ceil(data.length / 9)
 const linkList = document.querySelector('.link-list')
 linkList.innerHTML=''
-function addPagination(data){
+function removeClasses(e){
+   e.className=''
+}
+function addPagination(listofStudents){
+   const numOfPages = Math.ceil(listofStudents.length / 9)
    for(i=1; i<=numOfPages; i++){
-      let button = `<li> <button type="button">${i}</button> </li>`;
+      let button = `<li> <button type="button" class="pageButton">${i}</button> </li>`;
       linkList.insertAdjacentHTML('beforeend', button);
    }
-   const setActive = document.querySelector('button')
-   setActive.className += 'active'
-/*
-Event listener will change the items on the page based on the button item
-clicked by switching active class.
-*/
+   console.log('data',listofStudents)
+   const pageButtons = document.querySelector('.pageButton')
+   pageButtons.className = 'active'
+   /*
+   Event listener will change the items on the page based on the button item
+   clicked by switching active class.
+   */
    linkList.addEventListener('click', (e)=>{
       if(e.target.tagName === 'BUTTON'){
-         const removeActive = document.querySelector('.active')
-         removeActive.className = ''
+         const activeButton = document.querySelector('.active')
+         removeClasses(activeButton)
          e.target.className = "active"
-         showPage(data,e.target.textContent)
+         showPage(listofStudents, e.target.textContent)
    
       }
       
    }) 
 }
 /*
-Search Bar filter will check for search term and filter the page based on results
+Search Bar filter will check for search term and filter the page based on results. Filter
+will display only items related to search, and will display a no results found message
+if unmatched search
 */
 const header = document.querySelector('header');
 const searchBar = document.createElement('label')
@@ -84,6 +90,7 @@ searchBar.innerHTML = `<span>Search by name</span>
 <button type="button"><img src="img/icn-search.svg" alt="Search icon">
 </button>
 `;
+
 header.appendChild(searchBar);
 searchBar.addEventListener('keyup', (e) =>{
    const searchTerm = e.target.value.toLowerCase();
@@ -96,8 +103,9 @@ searchBar.addEventListener('keyup', (e) =>{
 showPage(filteredStudents,1)
    if (filteredStudents.length <= 9){               
       linkList.innerHTML = ''
-         }else if (filteredStudents.length > 9)
-         {addPagination(filteredStudents)}
+         }else if (filteredStudents.length > 9 ){
+            linkList.innerHTML = ''
+            addPagination(filteredStudents)}
    if(filteredStudents.length == 0){
       let ul = document.querySelector('ul')  
       let noResults = document.createElement('h3')
@@ -107,4 +115,4 @@ showPage(filteredStudents,1)
 })
 
 showPage(data,1);
-// addPagination(data);
+addPagination(data);
